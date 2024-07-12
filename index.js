@@ -2,7 +2,7 @@
 
 var path = require('path');
 var http = require('http');
-var serveradress = '192.168.1.123'
+var serveradress = '192.168.0.108'
 
 var oas3Tools = require('oas3-tools');
 var serverPort = 8082;

@@ -23,8 +23,8 @@ module.exports.generateOtp = function generateOtp(req, res, next, body) {
     });
 };
 
-module.exports.preference = function preference(req, res, next, body, uuid) {
-  Users.preference(body, uuid)
+module.exports.preference = function preference(req, res, next, body) {
+  Users.preference(body)
     .then(function(response) {
       utils.writeJson(res, response);
     })
@@ -49,6 +49,26 @@ module.exports.verifyotp = function verifyotp(req, res, next, body) {
       utils.writeJson(res, response);
     })
     .catch(function(response) {
+      utils.writeJson(res, response);
+    });
+};
+
+module.exports.accountDetails = function accountDetails (req, res, next, body) {
+  Users.accountDetails(body)
+    .then(function (response) {
+      utils.writeJson(res, response);
+    })
+    .catch(function (response) {
+      utils.writeJson(res, response);
+    });
+};
+
+module.exports.chcekMobile = function chcekMobile (req, res, next, body) {
+  Users.chcekMobile(body)
+    .then(function (response) {
+      utils.writeJson(res, response);
+    })
+    .catch(function (response) {
       utils.writeJson(res, response);
     });
 };

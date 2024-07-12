@@ -11,31 +11,6 @@ tags:
 - name: users
   description: Everything about authentication
 paths:
-  /users:
-    post:
-      tags:
-      - users
-      summary: Check the mobile number registered
-      description: check mobile number registered
-      operationId: checkMobile
-      requestBody:
-        description: mobile number
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/auth'
-      responses:
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/authRespose'
-        "400":
-          description: invalid data
-        "422":
-          description: Validation exception
-      x-swagger-router-controller: Users
   /user/otp:
     post:
       tags:
@@ -51,7 +26,7 @@ paths:
               $ref: '#/components/schemas/user_otp_body'
       responses:
         "200":
-          description: Successful operation
+          description: Successfull operation
           content:
             application/json:
               schema:
@@ -66,7 +41,7 @@ paths:
       description: verify otp
       operationId: verifyotp
       requestBody:
-        description: verify otp
+        description: verifyotp
         content:
           application/json:
             schema:
@@ -104,43 +79,78 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/otpResposne'
+                $ref: '#/components/schemas/secrets'
             application/xml:
               schema:
-                $ref: '#/components/schemas/otpResposne'
+                $ref: '#/components/schemas/secrets'
         "422":
           description: Validation exception
       x-swagger-router-controller: Users
-  /users/{uuid}/preferences:
+  /user/accounts/get:
+    post:
+      tags:
+      - users
+      summary: get account details
+      description: Account Details
+      operationId: accountDetails
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/accounts_get_body'
+      responses:
+        "200":
+          description: Successfull Opertion
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_2'
+      x-swagger-router-controller: Users
+  /user/account/upi/get:
+    post:
+      tags:
+      - users
+      summary: get static qrcode
+      description: ' '
+      operationId: chcekMobile
+      requestBody:
+        description: mobile number
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/auth'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/upi'
+        "400":
+          description: invalid data
+        "422":
+          description: Validation exception
+      x-swagger-router-controller: Users
+  /user/preferences:
     put:
       tags:
       - users
       summary: update preferences
       description: ""
       operationId: preference
-      parameters:
-      - name: uuid
-        in: path
-        description: ID of user
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: integer
-          format: int64
       requestBody:
         description: preferences
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/uuid_preferences_body'
+              $ref: '#/components/schemas/user_preferences_body'
       responses:
         "200":
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_2'
+                $ref: '#/components/schemas/inline_response_200_3'
         "400":
           description: invalid data
           content:
@@ -148,24 +158,25 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_400'
       x-swagger-router-controller: Users
+  /tnc/get:
+    post:
+      tags:
+      - users
+      summary: update preferences
+      description: ""
+      operationId: tnc
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_4'
+        "400":
+          description: invalid data
+      x-swagger-router-controller: Users
 components:
   schemas:
-    authRespose:
-      type: object
-      properties:
-        code:
-          type: integer
-          example: 2000
-        mobile:
-          type: integer
-          example: 0
-        otpVerification:
-          type: integer
-          example: 0
-      example:
-        otpVerification: 0
-        code: 2000
-        mobile: 0
     otpBody:
       type: object
       properties:
@@ -182,14 +193,30 @@ components:
         identification:
           type: string
           example: "234554"
-    otpResposne:
+    upi:
       type: object
       properties:
         code:
           type: integer
           example: 2000
         data:
-          $ref: '#/components/schemas/otpResposne_data'
+          $ref: '#/components/schemas/upi_data'
+      example:
+        code: 2000
+        data:
+          customer_vpa: JSFidb012345678bd12345p6128125ded45
+          customer_name: abc
+          base64qrcode: iVBORw0KGgoAAAANSUhEUgAAAlgAAAQaCAIAAAAQRJHWAACAAElEQVR42uzdebQV1Z33/
+            /vHs1avleTX/azn6d/KahXBCZO2FaJJJ4b8YkfMk8e222hit9HE2CYYTdoMKlwVEASTiKjgEHECUQ
+            ERZXAAHBhFRFBEAQ0oMyhXLncegAt3+H3P3
+    secrets:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 2000
+        data:
+          $ref: '#/components/schemas/secrets_data'
       example:
         code: 2000
         data:
@@ -199,22 +226,19 @@ components:
           refresh_token: iVBORw0KGgoAAAANSUhEUgAAAlgAAAQaCAIAAAAQRJHWAACAAElEQVR42uzdebQV1Z33/
             /vHs1avleTX/azn6d/KahXBCZO2FaJJJ4b8YkfMk8e222hit9HE2CYYTdoMKlwVEASTiKjgEHECUQ
             ERZXAAHBhFRFBEAQ0oMyhXLncegAt3+H3P3
-          preferences:
+          default_preferences:
             language: en
             mute: "true"
-          customer_vpa: JSFidb012345678bd12345p6128125ded45
-          customer_name: abc
-          mobile_number: "9876543210"
-          uuid: 12
-          base64qrcode: iVBORw0KGgoAAAANSUhEUgAAAlgAAAQaCAIAAAAQRJHWAACAAElEQVR42uzdebQV1Z33/
-            /vHs1avleTX/azn6d/KahXBCZO2FaJJJ4b8YkfMk8e222hit9HE2CYYTdoMKlwVEASTiKjgEHECUQ
-            ERZXAAHBhFRFBEAQ0oMyhXLncegAt3+H3P3
+          uuid: fsndfj2454
     auth:
       type: object
       properties:
         mobile_number:
           type: string
           example: "9283942989"
+        account_number:
+          type: string
+          example: "26564462343569"
     user_otp_body:
       type: object
       properties:
@@ -254,19 +278,45 @@ components:
         mpin:
           type: integer
           example: 12432
-        user_fcm_token:
-          type: string
-          example: 23dsjfvmfd vdfnvi34543546nvnkkkkkk dbffns dm fjvndfgdfsdf
-    uuid_preferences_body:
+    accounts_get_body:
       type: object
       properties:
+        mobile:
+          type: string
+          example: "1215545454"
+    inline_response_200_2:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 2000
+        data:
+          $ref: '#/components/schemas/inline_response_200_2_data'
+      example:
+        code: 2000
+        data:
+          accounts: "[{\"customerId\":\"11111111\",\"customerReferenceNumber\":\"\
+            5674267906535678\",\"customerFullName\":\"Sample Kumar\",\"mobileNumber\"\
+            :\"9999999999\",\"accountId\":\"xxxxxxxxxxxx3984\",\"accountType\":\"\
+            CURRENT\",\"accountStatus\":\"ACCOUNT OPEN REGULAR\",\"IFSCCode\":\"JSFB0004534\"\
+            ,\"aeba\":\"Y\"},{\"customerId\":\"2222222\",\"customerReferenceNumber\"\
+            :\"5674267906535678\",\"customerFullName\":\"Sample Kumar\",\"mobileNumber\"\
+            :\"9999999999\",\"accountId\":\"xxxxxxxxxxxx3984\",\"accountType\":\"\
+            CURRENT\",\"accountStatus\":\"ACCOUNT OPEN REGULAR\",\"IFSCCode\":\"JSFB0004534\"\
+            ,\"aeba\":\"Y\"}]"
+    user_preferences_body:
+      type: object
+      properties:
+        uuid:
+          type: string
+          example: bdsjfj145645-sdfnsdnf2sdf
         language:
           type: string
           example: kn
         mute:
           type: string
           example: "true"
-    inline_response_200_2:
+    inline_response_200_3:
       type: object
       properties:
         code:
@@ -287,7 +337,39 @@ components:
         message:
           type: string
           example: invalid/missing uuid
-    otpResposne_data_preferences:
+    inline_response_200_4:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 2000
+        url:
+          type: string
+          example: https://tnc.com
+      example:
+        code: 2000
+        url: https://tnc.com
+    upi_data:
+      type: object
+      properties:
+        base64qrcode:
+          type: string
+          example: iVBORw0KGgoAAAANSUhEUgAAAlgAAAQaCAIAAAAQRJHWAACAAElEQVR42uzdebQV1Z33/
+            /vHs1avleTX/azn6d/KahXBCZO2FaJJJ4b8YkfMk8e222hit9HE2CYYTdoMKlwVEASTiKjgEHECUQ
+            ERZXAAHBhFRFBEAQ0oMyhXLncegAt3+H3P3
+        customer_name:
+          type: string
+          example: abc
+        customer_vpa:
+          type: string
+          example: JSFidb012345678bd12345p6128125ded45
+      example:
+        customer_vpa: JSFidb012345678bd12345p6128125ded45
+        customer_name: abc
+        base64qrcode: iVBORw0KGgoAAAANSUhEUgAAAlgAAAQaCAIAAAAQRJHWAACAAElEQVR42uzdebQV1Z33/
+          /vHs1avleTX/azn6d/KahXBCZO2FaJJJ4b8YkfMk8e222hit9HE2CYYTdoMKlwVEASTiKjgEHECUQ
+          ERZXAAHBhFRFBEAQ0oMyhXLncegAt3+H3P3
+    secrets_data_default_preferences:
       type: object
       properties:
         language:
@@ -298,10 +380,76 @@ components:
           example: "true"
       example:
         language: en
-        mute: "true"
-    otpResposne_data:
+        mute: "false"
+    secrets_data:
       type: object
       properties:
         uuid:
-          type: integer
-          example: 12
+          type: string
+          example: fsndfj2454
+        access_token:
+          type: string
+          example: iVBORw0KGgoAAAANSUhEUgAAAlgAAAQaCAIAAAAQRJHWAACAAElEQVR42uzdebQV1Z33/
+            /vHs1avleTX/azn6d/KahXBCZO2FaJJJ4b8YkfMk8e222hit9HE2CYYTdoMKlwVEASTiKjgEHECUQ
+            ERZXAAHBhFRFBEAQ0oMyhXLncegAt3+H3P3
+        refresh_token:
+          type: string
+          example: iVBORw0KGgoAAAANSUhEUgAAAlgAAAQaCAIAAAAQRJHWAACAAElEQVR42uzdebQV1Z33/
+            /vHs1avleTX/azn6d/KahXBCZO2FaJJJ4b8YkfMk8e222hit9HE2CYYTdoMKlwVEASTiKjgEHECUQ
+            ERZXAAHBhFRFBEAQ0oMyhXLncegAt3+H3P3
+        default_preferences:
+          $ref: '#/components/schemas/secrets_data_default_preferences'
+      example:
+        access_token: iVBORw0KGgoAAAANSUhEUgAAAlgAAAQaCAIAAAAQRJHWAACAAElEQVR42uzdebQV1Z33/
+          /vHs1avleTX/azn6d/KahXBCZO2FaJJJ4b8YkfMk8e222hit9HE2CYYTdoMKlwVEASTiKjgEHECUQ
+          ERZXAAHBhFRFBEAQ0oMyhXLncegAt3+H3P3
+        refresh_token: iVBORw0KGgoAAAANSUhEUgAAAlgAAAQaCAIAAAAQRJHWAACAAElEQVR42uzdebQV1Z33/
+          /vHs1avleTX/azn6d/KahXBCZO2FaJJJ4b8YkfMk8e222hit9HE2CYYTdoMKlwVEASTiKjgEHECUQ
+          ERZXAAHBhFRFBEAQ0oMyhXLncegAt3+H3P3
+        default_preferences:
+          language: en
+          mute: "true"
+        uuid: fsndfj2454
+    inline_response_200_2_data_accounts:
+      type: object
+      properties:
+        customerId:
+          type: string
+        customerReferenceNumber:
+          type: string
+        customerFullName:
+          type: string
+        mobileNumber:
+          type: string
+        accountId:
+          type: string
+        accountType:
+          type: string
+        accountStatus:
+          type: string
+        IFSCCode:
+          type: string
+        aeba:
+          type: string
+      example: "[{\"customerId\":\"11111111\",\"customerReferenceNumber\":\"5674267906535678\"\
+        ,\"customerFullName\":\"Sample Kumar\",\"mobileNumber\":\"9999999999\",\"\
+        accountId\":\"xxxxxxxxxxxx3984\",\"accountType\":\"CURRENT\",\"accountStatus\"\
+        :\"ACCOUNT OPEN REGULAR\",\"IFSCCode\":\"JSFB0004534\",\"aeba\":\"Y\"},{\"\
+        customerId\":\"11111111\",\"customerReferenceNumber\":\"5674267906535678\"\
+        ,\"customerFullName\":\"Sample Kumar\",\"mobileNumber\":\"9999999999\",\"\
+        accountId\":\"xxxxxxxxxxxx3984\",\"accountType\":\"CURRENT\",\"accountStatus\"\
+        :\"ACCOUNT OPEN REGULAR\",\"IFSCCode\":\"JSFB0004534\",\"aeba\":\"Y\"}]"
+    inline_response_200_2_data:
+      type: object
+      properties:
+        accounts:
+          $ref: '#/components/schemas/inline_response_200_2_data_accounts'
+      example:
+        accounts: "[{\"customerId\":\"11111111\",\"customerReferenceNumber\":\"5674267906535678\"\
+          ,\"customerFullName\":\"Sample Kumar\",\"mobileNumber\":\"9999999999\",\"\
+          accountId\":\"xxxxxxxxxxxx3984\",\"accountType\":\"CURRENT\",\"accountStatus\"\
+          :\"ACCOUNT OPEN REGULAR\",\"IFSCCode\":\"JSFB0004534\",\"aeba\":\"Y\"},{\"\
+          customerId\":\"11111111\",\"customerReferenceNumber\":\"5674267906535678\"\
+          ,\"customerFullName\":\"Sample Kumar\",\"mobileNumber\":\"9999999999\",\"\
+          accountId\":\"xxxxxxxxxxxx3984\",\"accountType\":\"CURRENT\",\"accountStatus\"\
+          :\"ACCOUNT OPEN REGULAR\",\"IFSCCode\":\"JSFB0004534\",\"aeba\":\"Y\"}]"
