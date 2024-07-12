@@ -1,0 +1,307 @@
+openapi: 3.0.3
+info:
+  title: user-ms
+  description: ""
+  contact:
+    email: bharghava.k@tibilsolutions.com
+  version: 1.0.11
+servers:
+- url: /
+tags:
+- name: users
+  description: Everything about authentication
+paths:
+  /users:
+    post:
+      tags:
+      - users
+      summary: Check the mobile number registered
+      description: check mobile number registered
+      operationId: checkMobile
+      requestBody:
+        description: mobile number
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/auth'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/authRespose'
+        "400":
+          description: invalid data
+        "422":
+          description: Validation exception
+      x-swagger-router-controller: Users
+  /user/otp:
+    post:
+      tags:
+      - users
+      summary: generate otp
+      description: generate otp
+      operationId: generateOtp
+      requestBody:
+        description: mobile number required
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/user_otp_body'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+        "400":
+          description: bad request
+      x-swagger-router-controller: Users
+    patch:
+      tags:
+      - users
+      summary: verify otp registered
+      description: verify otp
+      operationId: verifyotp
+      requestBody:
+        description: verify otp
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/otpBody'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_1'
+        "400":
+          description: invalid data
+        "422":
+          description: Validation exception
+      x-swagger-router-controller: Users
+  /user/secrets:
+    post:
+      tags:
+      - users
+      summary: Check the mobile number registered
+      description: check mobile number registered
+      operationId: token
+      requestBody:
+        description: mobile number
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/user_secrets_body'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/otpResposne'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/otpResposne'
+        "422":
+          description: Validation exception
+      x-swagger-router-controller: Users
+  /users/{uuid}/preferences:
+    put:
+      tags:
+      - users
+      summary: update preferences
+      description: ""
+      operationId: preference
+      parameters:
+      - name: uuid
+        in: path
+        description: ID of user
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        description: preferences
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/uuid_preferences_body'
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_2'
+        "400":
+          description: invalid data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+      x-swagger-router-controller: Users
+components:
+  schemas:
+    authRespose:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 2000
+        mobile:
+          type: integer
+          example: 0
+        otpVerification:
+          type: integer
+          example: 0
+      example:
+        otpVerification: 0
+        code: 2000
+        mobile: 0
+    otpBody:
+      type: object
+      properties:
+        otp:
+          type: integer
+          format: int64
+          example: 873443
+        mobile_number:
+          type: string
+          example: "8375437533"
+        device_id:
+          type: string
+          example: "345343453"
+        identification:
+          type: string
+          example: "234554"
+    otpResposne:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 2000
+        data:
+          $ref: '#/components/schemas/otpResposne_data'
+      example:
+        code: 2000
+        data:
+          access_token: iVBORw0KGgoAAAANSUhEUgAAAlgAAAQaCAIAAAAQRJHWAACAAElEQVR42uzdebQV1Z33/
+            /vHs1avleTX/azn6d/KahXBCZO2FaJJJ4b8YkfMk8e222hit9HE2CYYTdoMKlwVEASTiKjgEHECUQ
+            ERZXAAHBhFRFBEAQ0oMyhXLncegAt3+H3P3
+          refresh_token: iVBORw0KGgoAAAANSUhEUgAAAlgAAAQaCAIAAAAQRJHWAACAAElEQVR42uzdebQV1Z33/
+            /vHs1avleTX/azn6d/KahXBCZO2FaJJJ4b8YkfMk8e222hit9HE2CYYTdoMKlwVEASTiKjgEHECUQ
+            ERZXAAHBhFRFBEAQ0oMyhXLncegAt3+H3P3
+          preferences:
+            language: en
+            mute: "true"
+          customer_vpa: JSFidb012345678bd12345p6128125ded45
+          customer_name: abc
+          mobile_number: "9876543210"
+          uuid: 12
+          base64qrcode: iVBORw0KGgoAAAANSUhEUgAAAlgAAAQaCAIAAAAQRJHWAACAAElEQVR42uzdebQV1Z33/
+            /vHs1avleTX/azn6d/KahXBCZO2FaJJJ4b8YkfMk8e222hit9HE2CYYTdoMKlwVEASTiKjgEHECUQ
+            ERZXAAHBhFRFBEAQ0oMyhXLncegAt3+H3P3
+    auth:
+      type: object
+      properties:
+        mobile_number:
+          type: string
+          example: "9283942989"
+    user_otp_body:
+      type: object
+      properties:
+        mobile_number:
+          type: string
+          example: "23333394"
+    inline_response_200:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 2000
+        identification:
+          type: string
+          example: "453453"
+      example:
+        code: 2000
+        identification: "453453"
+    inline_response_200_1:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 2000
+        message:
+          type: string
+          example: ok
+      example:
+        code: 2000
+        message: ok
+    user_secrets_body:
+      type: object
+      properties:
+        mobile_number:
+          type: string
+          example: "235435656"
+        mpin:
+          type: integer
+          example: 12432
+        user_fcm_token:
+          type: string
+          example: 23dsjfvmfd vdfnvi34543546nvnkkkkkk dbffns dm fjvndfgdfsdf
+    uuid_preferences_body:
+      type: object
+      properties:
+        language:
+          type: string
+          example: kn
+        mute:
+          type: string
+          example: "true"
+    inline_response_200_2:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 2000
+        message:
+          type: string
+          example: updated successfully
+      example:
+        code: 2000
+        message: updated successfully
+    inline_response_400:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 1000
+        message:
+          type: string
+          example: invalid/missing uuid
+    otpResposne_data_preferences:
+      type: object
+      properties:
+        language:
+          type: string
+          example: en
+        mute:
+          type: string
+          example: "true"
+      example:
+        language: en
+        mute: "true"
+    otpResposne_data:
+      type: object
+      properties:
+        uuid:
+          type: integer
+          example: 12
