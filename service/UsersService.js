@@ -106,7 +106,9 @@ exports.generateOtp = function(body) {
         break;
 
       // Validate mobile number format (exactly 10 digits)
-      case body.mobile_number === "9731037150":
+      case body.mobile_number == "9731037150":
+      case body.mobile_number == "8105325199":
+      case body.mobile_number == "8073843651":
         examples['application/json'] = {
           code: 2000,
           identification: '453453'
@@ -196,7 +198,7 @@ exports.preference = function(body) {
         break;
 
       // Validate if the 'language' field has an accepted value
-      case body.uuid !== 'bdsjfj145645-sdfnsdnf2sdf':
+      case body.uuid !== '32532mkdmf43435':
         examples['application/json'] = {
           "code": 1000,
           "message": "please enter a valid uuid"
@@ -250,7 +252,9 @@ exports.token = function(body) {
         };
         resolve(examples['application/json']);
         break;
-      case body.mobile_number !== '9731037150':
+      case body.mobile_number == "9731037150":
+      case body.mobile_number == "8105325199":
+      case body.mobile_number == "8073843651":
         examples['application/json'] = {
           code: 1000,
           message: 'please enter a valid mobile_number'
@@ -282,7 +286,7 @@ exports.token = function(body) {
         examples['application/json'] = {
           code: 2000,
           data: {
-            "uuid": "fsndfj2454",
+            "uuid": "32532mkdmf43435",
             "access_token": "iVBORw0KGgoAAAANSUhEUgAAAlgAAAQaCAIAAAAQRJHWAACAAElEQVR42uzdebQV1Z33/ /vHs1avleTX/azn6d/KahXBCZO2FaJJJ4b8YkfMk8e222hit9HE2CYYTdoMKlwVEASTiKjgEHECUQ ERZXAAHBhFRFBEAQ0oMyhXLncegAt3+H3P3",
             "refresh_token": "iVBORw0KGgoAAAANSUhEUgAAAlgAAAQaCAIAAAAQRJHWAACAAElEQVR42uzdebQV1Z33/ /vHs1avleTX/azn6d/KahXBCZO2FaJJJ4b8YkfMk8e222hit9HE2CYYTdoMKlwVEASTiKjgEHECUQ ERZXAAHBhFRFBEAQ0oMyhXLncegAt3+H3P3",
             "default_preferences": {
@@ -360,14 +364,18 @@ exports.verifyotp = function(body) {
             };
             resolve(examples['application/json']);
             break;
-      case body.mobile_number !== '9731037150':
+      case body.mobile_number == "9731037150":
+      case body.mobile_number == "8105325199":
+      case body.mobile_number == "8073843651":
         examples['application/json'] = {
           code: 1000,
           message: 'Please enter a valid mobile number'
         };
         resolve(examples['application/json']);
         break;
-      case body.mobile !== '9731037150':
+      case body.mobile_number == "9731037150":
+      case body.mobile_number == "8105325199":
+      case body.mobile_number == "8073843651":
         examples['application/json'] = {
           code: 2000,
           message: 'ok'
@@ -392,10 +400,10 @@ exports.accountDetails = function(body) {
 
     switch (true) {
       // Check if the mobile number field is present
-      case !body.hasOwnProperty('mobile_number'):
+      case !body.hasOwnProperty('mobile'):
         examples['application/json'] = {
           code: 1000,
-          message: 'required field mobile_number'
+          message: 'required field mobile'
         };
         resolve(examples['application/json']);
         break;
@@ -419,9 +427,11 @@ exports.accountDetails = function(body) {
         break;
 
       // Validate mobile number format (exactly 10 digits)
-      case body.mobile === "9731037150":
+      case body.mobile == "9731037150":
+      case body.mobile == "8105325199":
+      case body.mobile == "8073843651":
         examples['application/json'] = {
-          code: 1000,
+          code: 2000,
           data: {
             "accounts": [
               {
@@ -436,7 +446,7 @@ exports.accountDetails = function(body) {
                 "aeba": "Y"
               },
               {
-                "customerId": "11111111",
+                "customerId": "22222222",
                 "customerReferenceNumber": "5674267906535678",
                 "customerFullName": "Sample Kumar",
                 "mobileNumber": "9999999999",
