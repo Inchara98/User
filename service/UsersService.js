@@ -252,9 +252,9 @@ exports.token = function(body) {
         };
         resolve(examples['application/json']);
         break;
-      case body.mobile_number == "9731037150":
-      case body.mobile_number == "8105325199":
-      case body.mobile_number == "8073843651":
+      case body.mobile_number !== "9731037150":
+      case body.mobile_number !== "8105325199":
+      case body.mobile_number !== "8073843651":
         examples['application/json'] = {
           code: 1000,
           message: 'please enter a valid mobile_number'
@@ -364,9 +364,9 @@ exports.verifyotp = function(body) {
             };
             resolve(examples['application/json']);
             break;
-      case body.mobile_number == "9731037150":
-      case body.mobile_number == "8105325199":
-      case body.mobile_number == "8073843651":
+      case body.mobile_number !== "9731037150":
+      case body.mobile_number !== "8105325199":
+      case body.mobile_number !== "8073843651":
         examples['application/json'] = {
           code: 1000,
           message: 'Please enter a valid mobile number'
