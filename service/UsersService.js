@@ -282,17 +282,13 @@ exports.token = function(body) {
         examples['application/json'] = {
           code: 2000,
           data: {
-            access_token: "iVBORw0KGgoAAAANSUhEUgAAAlgAAAQaCAIAAAAQRJHWAACAAElEQVR42uzdebQV1Z33/ /vHs1avleTX/azn6d/KahXBCZO2FaJJJ4b8YkfMk8e222hit9HE2CYYTdoMKlwVEASTiKjgEHECUQ ERZXAAHBhFRFBEAQ0oMyhXLncegAt3+H3P3",
-            refresh_token: "iVBORw0KGgoAAAANSUhEUgAAAlgAAAQaCAIAAAAQRJHWAACAAElEQVR42uzdebQV1Z33/ /vHs1avleTX/azn6d/KahXBCZO2FaJJJ4b8YkfMk8e222hit9HE2CYYTdoMKlwVEASTiKjgEHECUQ ERZXAAHBhFRFBEAQ0oMyhXLncegAt3+H3P3",
-            preferences: {
-              language: "en",
-              mute: "true"
-            },
-            customer_vpa: "JSFidb012345678bd12345p6128125ded45",
-            customer_name: "abc",
-            mobile_number: "9731037150",
-            uuid: 12,
-            base64qrcode: "iVBORw0KGgoAAAANSUhEUgAAAlgAAAQaCAIAAAAQRJHWAACAAElEQVR42uzdebQV1Z33/ /vHs1avleTX/azn6d/KahXBCZO2FaJJJ4b8YkfMk8e222hit9HE2CYYTdoMKlwVEASTiKjgEHECUQ ERZXAAHBhFRFBEAQ0oMyhXLncegAt3+H3P3"
+            "uuid": "fsndfj2454",
+            "access_token": "iVBORw0KGgoAAAANSUhEUgAAAlgAAAQaCAIAAAAQRJHWAACAAElEQVR42uzdebQV1Z33/ /vHs1avleTX/azn6d/KahXBCZO2FaJJJ4b8YkfMk8e222hit9HE2CYYTdoMKlwVEASTiKjgEHECUQ ERZXAAHBhFRFBEAQ0oMyhXLncegAt3+H3P3",
+            "refresh_token": "iVBORw0KGgoAAAANSUhEUgAAAlgAAAQaCAIAAAAQRJHWAACAAElEQVR42uzdebQV1Z33/ /vHs1avleTX/azn6d/KahXBCZO2FaJJJ4b8YkfMk8e222hit9HE2CYYTdoMKlwVEASTiKjgEHECUQ ERZXAAHBhFRFBEAQ0oMyhXLncegAt3+H3P3",
+            "default_preferences": {
+              "language": "en",
+              "mute": "0"
+            }
           }
         };
         resolve(examples['application/json']);
@@ -405,7 +401,7 @@ exports.accountDetails = function(body) {
         break;
 
       // Check if the mobile number is provided
-      case body.mobile_number === "":
+      case body.mobile === "":
         examples['application/json'] = {
           code: 1000,
           message: 'mobile number is required'
@@ -414,7 +410,7 @@ exports.accountDetails = function(body) {
         break;
 
       // Check if the mobile number is less than 10 digits
-      case body.mobile_number === "123456789":
+      case body.mobile === "123456789":
         examples['application/json'] = {
           code: 1000,
           message: 'mobile number should not be less than 10 digits'
@@ -423,10 +419,10 @@ exports.accountDetails = function(body) {
         break;
 
       // Validate mobile number format (exactly 10 digits)
-      case body.mobile_number === "9731037150":
+      case body.mobile === "9731037150":
         examples['application/json'] = {
-          "code": 2000,
-          "data": {
+          code: 1000,
+          data: {
             "accounts": [
               {
                 "customerId": "11111111",
@@ -457,7 +453,7 @@ exports.accountDetails = function(body) {
         break;
 
       // Check if the mobile number exceeds 10 digits
-      case body.mobile_number === "12345678901":
+      case body.mobile === "12345678901":
         examples['application/json'] = {
           code: 1000,
           message: 'mobile_number maximum 10 number'
